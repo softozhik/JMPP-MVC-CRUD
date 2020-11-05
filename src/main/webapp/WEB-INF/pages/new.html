@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New User</title>
+</head>
+<body>
+<h2>New Customer</h2>
+<form action="save" method="post" modelAttribute="customer">
+    <table border="0" cellpadding="5">
+        <tr>
+            <td>Name: </td>
+            <td><input path="name" /></td>
+        </tr>
+        <tr>
+            <td>Email: </td>
+            <td><input path="last_name" /></td>
+        </tr>
+        <tr>
+            <td>Address: </td>
+            <td><input path="email" /></td>
+        </tr>
+        <tr>
+            <td colspan="2"><input type="submit" value="Save"></td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>
