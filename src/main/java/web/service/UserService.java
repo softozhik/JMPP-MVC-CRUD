@@ -32,4 +32,10 @@ import java.util.List;
             repo.deleteById(id);
         }
 
+        public void update(Long id, User changeUser) {
+            User updateUser = get(id);
+            updateUser.setFirstName(changeUser.getFirstName());
+            updateUser.setLastName(changeUser.getLastName());
+            updateUser.setEmail(changeUser.getEmail());
+        }
 }

@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>New User</title>
+    <title>Edit User</title>
 </head>
 <body>
-<h3>New User</h3>
-<form th:method="POST" th:action="@{/}" th:object="${user}">
+<form th:method="PATCH" th:action="@{/{id}(id=${user.getId()})}" th:object="${user}">
     <label for="firstName">Enter First Name: </label>
     <input type="text" th:field="*{firstName}" id="firstName"/>
     <label for="lastName">Enter Last Name: </label>
@@ -14,7 +13,7 @@
     <label for="email">Enter e-mail: </label>
     <input type="email" th:field="*{email}" id="email"/>
     <br/>
-    <input type="submit" value="Create!"/>
+    <input type="submit" value="Update!"/>
 </form>
 </body>
 </html>

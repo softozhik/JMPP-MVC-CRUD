@@ -1,18 +1,14 @@
 package web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.*;
 import web.model.User;
 import web.service.UserService;
 
 import java.util.List;
-import java.util.Map;
 
 @Controller
 public class UsersController {
@@ -25,16 +21,38 @@ public class UsersController {
     @GetMapping(value = "/users")
     public String allUsers (ModelMap model) {
         List<User> listUsers = userService.listAll();
-//        System.out.println(listUsers);
         model.addAttribute("users", listUsers);
         return "users";
     }
 
-    @RequestMapping("/new")
-    public String newCustomerForm(Map<String, Object> model) {
-        User user = new User();
-        model.put("customer", user);
-        return "new_customer";
+    @GetMapping("/new")
+    public String newUser(ModelMap model) {
+        model.addAttribute("user", new User());
+        return "new";
+    }
+
+    @PostMapping()
+    public String create(@ModelAttribute("user") User user) {
+        userService.save(user);
+        return "redirect:/users";
+    }
+
+    @GetMapping("/{id}/edit")
+    public String edit(Model model, @PathVariable("id") Long id) {
+        model.addAttribute("user", userService.get(id));
+        return "edit";
+    }
+
+    @PatchMapping("/{id}")
+    public String update(@ModelAttribute("user") User user, @PathVariable("id") Long id) {
+        userService.update(id, user);
+        return "redirect:/users";
+    }
+
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable("id") Long id) {
+        userService.delete(id);
+        return "redirect:/users";
     }
 
 }
