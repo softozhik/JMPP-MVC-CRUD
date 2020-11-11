@@ -25,6 +25,11 @@ public class UsersController {
         return "hello";
     }
 
+    @GetMapping(value = "login")
+    public String loginPage() {
+        return "login";
+    }
+
     @GetMapping(value = "/users")
     public String allUsers (ModelMap model) {
         List<User> listUsers = userService.listAll();
