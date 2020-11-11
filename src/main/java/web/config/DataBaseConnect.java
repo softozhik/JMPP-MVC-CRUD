@@ -31,7 +31,7 @@ public class DataBaseConnect {
 
 
     private static final String dbdriver = "com.mysql.cj.jdbc.Driver";
-    private static final String dburl = "jdbc:mysql://localhost:3306/mvc_crud";
+    private static final String dburl = "jdbc:mysql://localhost:3306/ss_crud";
     private static final String dbuser = "jm";
     private static final String dbpassword = "123456";
 
