@@ -18,6 +18,13 @@ public class UsersController {
     @Autowired
     private UserService userService;
 
+    @GetMapping(value = "/hello")
+    public String hello (ModelMap model) {
+        String messages = "Hello!";
+        model.addAttribute("messages", messages);
+        return "hello";
+    }
+
     @GetMapping(value = "/users")
     public String allUsers (ModelMap model) {
         List<User> listUsers = userService.listAll();
