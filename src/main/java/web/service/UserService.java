@@ -34,8 +34,8 @@ import java.util.List;
 
         public void update(Long id, User changeUser) {
             User updateUser = get(id);
-            updateUser.setFirstName(changeUser.getFirstName());
-            updateUser.setLastName(changeUser.getLastName());
+            updateUser.setName(changeUser.getName());
             updateUser.setEmail(changeUser.getEmail());
+            updateUser.setPassword(changeUser.getPassword());
         }
 }

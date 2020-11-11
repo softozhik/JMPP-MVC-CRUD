@@ -13,8 +13,8 @@
         <tr>
             <th width="150">ID</th>
             <th width="150">First Name</th>
-            <th width="150">Last Name</th>
             <th width="150">E-mail</th>
+            <th width="150">Password</th>
             <th width="100">Edit</th>
             <th width="100">Delete</th>
 
@@ -22,9 +22,9 @@
         <th:block th:each="msg : ${users}">
             <tr>
                 <td width="150" th:text="${msg.getId()}"></td>
-                <td width="150" th:text="${msg.getFirstName()}"></td>
-                <td width="150" th:text="${msg.getLastName()}"></td>
+                <td width="150" th:text="${msg.getName()}"></td>
                 <td width="150" th:text="${msg.getEmail()}"></td>
+                <td width="150" th:text="${msg.getPassword()}"></td>
                 <td><a th:href="@{/{id}/edit(id=${msg.getId()})}">Edit</a></td>
                 <td>
                     <form th:method="DELETE" th:action="@{/{id}(id=${msg.getId()})}">
