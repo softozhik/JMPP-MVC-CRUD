@@ -16,22 +16,18 @@ import java.util.List;
         @Autowired
         UserDao userDao;
 
-        public void save(User user) {
-            userDao.save(user);
-        }
 
         public List<User> listAll() {
             return (List<User>) userDao.findAll();
         }
 
         public User getUser(Long id) {
+            System.out.println(userDao.getOne(id));
             return userDao.getOne(id);
         }
 
-        public void delete(Long id) {
-            userDao.deleteById(id);
-        }
 
+        @Transactional
         public void update(Long id, User changeUser) {
             User updateUser = getUser(id);
             updateUser.setUsername(changeUser.getUsername());

@@ -11,7 +11,7 @@ import web.model.User;
 public interface UserDao extends JpaRepository<User, Long> {
 
 
-void update(Long id, User user);
+//void update(Long id, User user);
 //User getUser(Long id);
 }
 

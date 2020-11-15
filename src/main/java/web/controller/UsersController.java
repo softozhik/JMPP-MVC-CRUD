@@ -46,23 +46,29 @@ public class UsersController {
 
     @GetMapping(value = "/users")
     public String allUsers (ModelMap model) {
-        List<User> listUsers = userService.listAll();
-        System.out.println(listUsers);
+//        List<User> listUsers = userService.listAll();
+        List<User> listUsers = userDao.findAll();
         model.addAttribute("users", listUsers);
         return "users";
     }
 
 
     @GetMapping("/{id}/edit")
-    public String edit(Model model, @PathVariable("id") Long id) {
-        model.addAttribute("user", userDao.getOne(id));
+    public String edit(ModelMap model, @PathVariable("id") Long id) {
         model.addAttribute("allRoles", roleDao.findAll());
+        model.addAttribute("user", userService.getUser(id));
         return "edit";
     }
 
-    @PatchMapping("/{id}")
-    public String update(@ModelAttribute("user") User user, @PathVariable("id") Long id) {
-        userDao.update(id, user);
+    @PostMapping("/{id}")
+    public String update(@ModelAttribute("user") User user, @PathVariable("id") Long id,
+                         @RequestParam(value = "allRoles") String [] roles) {
+        Set<Role> roleSet = new HashSet<>();
+        for (String roleName : roles) {
+            roleSet.add(roleDao.findRoleByRole(roleName));
+        }
+        user.setRoles(roleSet);
+        userService.update(id, user);
         return "redirect:/users";
     }
 
