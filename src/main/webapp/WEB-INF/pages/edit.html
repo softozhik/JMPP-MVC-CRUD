@@ -6,6 +6,9 @@
 </head>
 <body>
 <form th:method="PATCH" th:action="@{/{id}(id=${user.getId()})}" th:object="${user}">
+    <label for="username">Enter Username: </label>
+    <input type="text" th:field="*{username}" id="username"/>
+
     <label for="name">Enter name: </label>
     <input type="text" th:field="*{name}" id="name"/>
 

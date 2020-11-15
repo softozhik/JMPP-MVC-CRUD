@@ -5,10 +5,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+import web.dao.RoleDao;
+import web.dao.UserDao;
+import web.model.Role;
 import web.model.User;
+import web.service.RoleService;
 import web.service.UserService;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 public class UsersController {
@@ -16,7 +23,14 @@ public class UsersController {
     @Autowired
     private User users;
     @Autowired
+    private Role role;
+    @Autowired
+    private RoleDao roleDao;
+    @Autowired
+    private UserDao userDao;
+    @Autowired
     private UserService userService;
+
 
     @GetMapping(value = "/hello")
     public String hello (ModelMap model) {
@@ -38,33 +52,47 @@ public class UsersController {
         return "users";
     }
 
-    @GetMapping("/new")
-    public String newUser(ModelMap model) {
-        model.addAttribute("user", new User());
-        return "new";
-    }
-
-    @PostMapping()
-    public String create(@ModelAttribute("user") User user) {
-        userService.save(user);
-        return "redirect:/users";
-    }
 
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") Long id) {
-        model.addAttribute("user", userService.get(id));
+        model.addAttribute("user", userDao.getOne(id));
+        model.addAttribute("allRoles", roleDao.findAll());
         return "edit";
     }
 
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("user") User user, @PathVariable("id") Long id) {
-        userService.update(id, user);
+        userDao.update(id, user);
         return "redirect:/users";
     }
 
+
+
+    @GetMapping ("/new")
+    public String newUser (@ModelAttribute("user") User user, ModelMap model) {
+        model.addAttribute("user", new User());
+        model.addAttribute("allRoles", roleDao.findAll());
+        return "new";
+    }
+
+    @PostMapping()
+    public String create (@ModelAttribute("user") User user,
+                          @RequestParam(value = "allRoles") String [] roles) {
+
+        Set<Role> roleSet = new HashSet<>();
+        for (String roleName : roles) {
+            roleSet.add(roleDao.findRoleByRole(roleName));
+        }
+        user.setRoles(roleSet);
+        userDao.save(user);
+        //System.out.println("++++++++++++++" + user.getPassword());
+        return "redirect:/users";
+    }
+
+
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") Long id) {
-        userService.delete(id);
+        userDao.deleteById(id);
         return "redirect:/users";
     }
 

@@ -12,19 +12,23 @@
     <table border="1" cellpadding="5">
         <tr>
             <th width="150">ID</th>
-            <th width="150">First Name</th>
+            <th width="150">Username</th>
+            <th width="150">Name</th>
             <th width="150">E-mail</th>
             <th width="150">Password</th>
+            <th width="150">Roles</th>
             <th width="100">Edit</th>
             <th width="100">Delete</th>
 
         </tr>
         <th:block th:each="msg : ${users}">
             <tr>
-                <td width="150" th:text="${msg.getId()}"></td>
-                <td width="150" th:text="${msg.getName()}"></td>
-                <td width="150" th:text="${msg.getEmail()}"></td>
-                <td width="150" th:text="${msg.getPassword()}"></td>
+                <td th:text="${msg.getId()}"></td>
+                <td th:text="${msg.getUsername()}"></td>
+                <td th:text="${msg.getName()}"></td>
+                <td th:text="${msg.getEmail()}"></td>
+                <td th:text="${msg.getRoles()}"></td>
+                <td th:text="${msg.getPassword()}"></td>
                 <td><a th:href="@{/{id}/edit(id=${msg.getId()})}">Edit</a></td>
                 <td>
                     <form th:method="DELETE" th:action="@{/{id}(id=${msg.getId()})}">
