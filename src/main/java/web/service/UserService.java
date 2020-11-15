@@ -26,6 +26,11 @@ import java.util.List;
             return userDao.getOne(id);
         }
 
+        public User findUserByUsername(String username) {
+            return userDao.findUserByUsername(username);
+        }
+
+
 
         @Transactional
         public void update(Long id, User changeUser) {

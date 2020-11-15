@@ -10,12 +10,14 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import web.config.handler.LoginSuccessHandler;
 import web.model.User;
+import web.service.UserDetailsServiceImpl;
 import web.service.UserService;
 
 import javax.sql.DataSource;
@@ -26,7 +28,7 @@ import javax.sql.DataSource;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 @Autowired
-UserService userService;
+UserDetailsServiceImpl userService;
 
 //    @Override
 //    public void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -58,7 +60,7 @@ UserService userService;
                 //указываем логику обработки при логине
                 .successHandler(new LoginSuccessHandler())
                 // указываем action с формы логина
-                .loginProcessingUrl("/login")
+//                .loginProcessingUrl("/login")
                 // Указываем параметры логина и пароля с формы логина
                 .usernameParameter("j_username")
                 .passwordParameter("j_password")
@@ -82,14 +84,21 @@ UserService userService;
                 .antMatchers("/login").anonymous()
                 // защищенные URL
 //                .antMatchers("/hello").access("hasAnyRole('ADMIN')").anyRequest().authenticated()
+                .antMatchers("/users").access("hasAnyRole('ADMIN')")
 //                .antMatchers("/hello").access("hasAnyRole('ADMIN')").anyRequest().authenticated()
 //                .antMatchers("/admin").access("hasAnyRole('ADMIN')")
 //                .antMatchers("/user").authenticated()
         ;
     }
-
+/*
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
+    public BCryptPasswordEncoder passwordEncoder() {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        return bCryptPasswordEncoder;
     }
+    */
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+//        return NoOpPasswordEncoder.getInstance();
+//    }
 }

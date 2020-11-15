@@ -1,11 +1,14 @@
 package web.model;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -37,6 +40,10 @@ public class User implements UserDetails {
     private Set<Role> roles;
 
     public User() { }
+
+    public User(String username, String password, List<GrantedAuthority> grantList) {
+    }
+
 
     public Set<Role> getRoles() {
         return roles;
@@ -76,7 +83,9 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+
+return getAuthorities();
+
     }
 
     public String getPassword() {
