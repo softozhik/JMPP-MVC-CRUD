@@ -1,6 +1,7 @@
 package web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -33,23 +34,18 @@ public class UsersController {
 
 
     @GetMapping(value = "/hello")
-    public String hello (ModelMap model) {
+    public String hello(ModelMap model) {
         String messages = "Hello!";
         model.addAttribute("messages", messages);
         return "hello";
     }
 
-    @GetMapping(value = "login")
-    public String loginPage() {
-        return "login";
-    }
 
-    @GetMapping(value = "/users")
-    public String allUsers (ModelMap model) {
-//        List<User> listUsers = userService.listAll();
+    @GetMapping(value = "/admin")
+    public String allUsers(ModelMap model) {
         List<User> listUsers = userDao.findAll();
         model.addAttribute("users", listUsers);
-        return "users";
+        return "admin";
     }
 
 
@@ -62,28 +58,27 @@ public class UsersController {
 
     @PostMapping("/{id}")
     public String update(@ModelAttribute("user") User user, @PathVariable("id") Long id,
-                         @RequestParam(value = "allRoles") String [] roles) {
+                         @RequestParam(value = "allRoles") String[] roles) {
         Set<Role> roleSet = new HashSet<>();
         for (String roleName : roles) {
             roleSet.add(roleDao.findRoleByRole(roleName));
         }
         user.setRoles(roleSet);
         userService.update(id, user);
-        return "redirect:/users";
+        return "redirect:/admin";
     }
 
 
-
-    @GetMapping ("/new")
-    public String newUser (@ModelAttribute("user") User user, ModelMap model) {
+    @GetMapping("/new")
+    public String newUser(@ModelAttribute("user") User user, ModelMap model) {
         model.addAttribute("user", new User());
         model.addAttribute("allRoles", roleDao.findAll());
         return "new";
     }
 
     @PostMapping()
-    public String create (@ModelAttribute("user") User user,
-                          @RequestParam(value = "allRoles") String [] roles) {
+    public String create(@ModelAttribute("user") User user,
+                         @RequestParam(value = "allRoles") String[] roles) {
 
         Set<Role> roleSet = new HashSet<>();
         for (String roleName : roles) {
@@ -91,8 +86,7 @@ public class UsersController {
         }
         user.setRoles(roleSet);
         userDao.save(user);
-        //System.out.println("++++++++++++++" + user.getPassword());
-        return "redirect:/users";
+        return "redirect:/admin";
     }
 
 
@@ -100,6 +94,19 @@ public class UsersController {
     public String delete(@PathVariable("id") Long id) {
         userDao.deleteById(id);
         return "redirect:/users";
+    }
+
+    @GetMapping("/user")
+    public String currentUser(ModelMap model, @AuthenticationPrincipal User user) {
+//        System.out.println("LoggedIn: " + user.getAuthorities());
+//        model.addAttribute("user", user.getAuthorities());
+        return "user";
+    }
+
+    @ModelAttribute("logoutLink")
+    @GetMapping(value = "logout")
+    public String logout() {
+        return "logout";
     }
 
 }
