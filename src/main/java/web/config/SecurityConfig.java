@@ -49,7 +49,7 @@ UserService userDao;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        System.out.println("старт метода аутентификации");
+//        System.out.println("старт метода аутентификации");
         roleDao.addRoles();
         userDao.addAdmin();
         auth.userDetailsService(userService);
@@ -87,7 +87,7 @@ UserService userDao;
                 .antMatchers("/login").anonymous()
                 // защищенные URL
 //                .antMatchers("/hello").access("hasAnyRole('ADMIN')").anyRequest().authenticated()
-                .antMatchers("/admin").access("hasAnyRole('ADMIN')")
+                .antMatchers("/admin/**").access("hasAnyRole('ADMIN')")
                 .antMatchers("/user").authenticated()
 //                .antMatchers("/admin").access("hasAnyRole('ADMIN')")
 //                .antMatchers("/user").authenticated()
